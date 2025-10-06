@@ -7,6 +7,7 @@
 	}
 }
 
+/* biome-ignore lint/suspicious/noUnknownAtRules: <This is a valid use case> */
 @theme {
 	--font-roboto: "Roboto", sans-serif;
 

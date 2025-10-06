@@ -46,7 +46,7 @@ export class GithubService {
 		try {
 			const nextPattern = /(?<=<)([\S]*)(?=>; rel="next")/i;
 			let pagesRemaining = true;
-			let data: GithubRepository[] = [];
+			const data: GithubRepository[] = [];
 
 			while (pagesRemaining) {
 				const response = await api.get<GithubRepository[]>(url, {
@@ -59,7 +59,7 @@ export class GithubService {
 
 				const linkHeader = response.headers.link;
 
-				pagesRemaining = linkHeader && linkHeader.includes(`rel="next"`);
+				pagesRemaining = linkHeader?.includes(`rel="next"`);
 
 				if (pagesRemaining) {
 					const match = linkHeader.match(nextPattern);

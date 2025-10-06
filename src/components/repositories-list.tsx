@@ -16,7 +16,12 @@ export function RepositoriesList({
 		return (
 			<div className="mt-10 flex flex-col gap-12">
 				{Array.from({ length: 10 }).map((_, index) => (
-					<RepositoryCardLoading key={`repository-card-loading-${index}`} />
+					<RepositoryCardLoading
+						key={`repository-card-loading-${
+							// biome-ignore lint/suspicious/noArrayIndexKey: <This is a valid use case>
+							index
+						}`}
+					/>
 				))}
 			</div>
 		);
