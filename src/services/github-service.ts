@@ -1,50 +1,102 @@
+import axios from "axios";
+import { GithubApiError } from "../errors/github-api-error";
 import { api } from "../lib/axios";
 import type {
 	GithubRepository,
 	GithubUser,
 } from "../types/github-service-types";
 
-async function getPaginatedData(url: string): Promise<GithubRepository[]> {
-	const nextPattern = /(?<=<)([\S]*)(?=>; rel="next")/i;
-	let pagesRemaining = true;
-	let data: GithubRepository[] = [];
+export class GithubService {
+	async getUser(username: string) {
+		if (!username || username.trim() === "") {
+			throw new GithubApiError("Username is required");
+		}
 
-	while (pagesRemaining) {
-		const response = await api.get<GithubRepository[]>(url, {
-			params: {
-				per_page: 100,
-			},
-		});
-
-		data = [...data, ...response.data];
-
-		const linkHeader = response.headers.link;
-
-		pagesRemaining = linkHeader && linkHeader.includes(`rel="next"`);
-
-		if (pagesRemaining) {
-			const match = linkHeader.match(nextPattern);
-			if (match) {
-				const nextUrl = new URL(match[0]);
-				url = nextUrl.pathname + nextUrl.search;
-			} else {
-				pagesRemaining = false;
+		try {
+			const response = await api.get<GithubUser>(`/users/${username}`, {
+				timeout: 10000,
+			});
+			return response.data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const status = error.response?.status;
+				if (status === 404) {
+					throw new GithubApiError(`User "${username}" not found`, 404, error);
+				}
 			}
+			throw error;
 		}
 	}
 
-	return data;
-}
+	async getRepositories(username: string) {
+		if (!username || username.trim() === "") {
+			throw new GithubApiError("Username is required");
+		}
+		return this.getPaginatedData(`/users/${username}/repos`);
+	}
 
-export const githubService = {
-	getUser: async (username: string) => {
-		const response = await api.get<GithubUser>(`/users/${username}`);
-		return response.data;
-	},
-	getRepositories: async (username: string) => {
-		return getPaginatedData(`/users/${username}/repos`);
-	},
-	getStarredRepositories: async (username: string) => {
-		return getPaginatedData(`/users/${username}/starred`);
-	},
-};
+	async getStarredRepositories(username: string) {
+		if (!username || username.trim() === "") {
+			throw new GithubApiError("Username is required");
+		}
+		return this.getPaginatedData(`/users/${username}/starred`);
+	}
+
+	private async getPaginatedData(url: string) {
+		try {
+			const nextPattern = /(?<=<)([\S]*)(?=>; rel="next")/i;
+			let pagesRemaining = true;
+			let data: GithubRepository[] = [];
+
+			while (pagesRemaining) {
+				const response = await api.get<GithubRepository[]>(url, {
+					params: {
+						per_page: 100,
+					},
+				});
+
+				data.push(...response.data);
+
+				const linkHeader = response.headers.link;
+
+				pagesRemaining = linkHeader && linkHeader.includes(`rel="next"`);
+
+				if (pagesRemaining) {
+					const match = linkHeader.match(nextPattern);
+					if (match) {
+						const nextUrl = new URL(match[0]);
+						url = nextUrl.pathname + nextUrl.search;
+					} else {
+						pagesRemaining = false;
+					}
+				}
+			}
+
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const status = error.response?.status;
+				const message = error.response?.data?.message || error.message;
+
+				if (status === 404) {
+					throw new GithubApiError("User or resource not found", 404, error);
+				}
+				if (status && status >= 500) {
+					throw new GithubApiError(
+						"GitHub API is currently unavailable. Please try again later.",
+						status,
+						error,
+					);
+				}
+
+				throw new GithubApiError(`GitHub API Error: ${message}`, status, error);
+			}
+
+			throw new GithubApiError(
+				"An unexpected error occurred while fetching data",
+				undefined,
+				error,
+			);
+		}
+	}
+}
