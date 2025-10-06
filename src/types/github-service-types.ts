@@ -13,4 +13,12 @@ export type GithubRepository = {
 	name: string;
 	description: string;
 	html_url: string;
+	language: string;
+	stargazers_count: number;
+	forks_count: number;
+	owner: {
+		login: string;
+	};
+	created_at: string;
+	updated_at: string;
 };
