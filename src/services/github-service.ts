@@ -12,12 +12,22 @@ export const githubService = {
 	getRepositories: async (username: string) => {
 		const response = await api.get<GithubRepository[]>(
 			`/users/${username}/repos`,
+			{
+				params: {
+					per_page: 1000,
+				},
+			},
 		);
 		return response.data;
 	},
 	getStarredRepositories: async (username: string) => {
 		const response = await api.get<GithubRepository[]>(
 			`/users/${username}/starred`,
+			{
+				params: {
+					per_page: 1000,
+				},
+			},
 		);
 		return response.data;
 	},
