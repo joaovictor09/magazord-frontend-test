@@ -7,6 +7,7 @@ interface RepositoryCardProps {
 	language: string;
 	stars: number;
 	forks: number;
+	url: string;
 }
 
 export function RepositoryCard({
@@ -16,21 +17,24 @@ export function RepositoryCard({
 	language,
 	stars,
 	forks,
+	url,
 }: RepositoryCardProps) {
 	return (
 		<div className="flex flex-col gap-[9px]">
-			<div>
+			<a href={url} target="_blank">
 				<span className="font-light text-lg">{author}</span>
 				<span className="font-normal text-lg"> / </span>
 				<span className="font-semibold text-lg text-[#0587FF]">{name}</span>
-			</div>
+			</a>
 
 			<span className="text-primary-light">{description}</span>
 
 			<div className="flex items-center gap-8">
-				<div className="flex items-center gap-2">
-					<span>{language}</span>
-				</div>
+				{language && (
+					<div className="flex items-center gap-2">
+						<span>{language}</span>
+					</div>
+				)}
 				<div className="flex items-center gap-2">
 					<span className="flex items-center gap-2">
 						<Star fill="#000" /> {stars}
