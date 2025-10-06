@@ -1,7 +1,9 @@
+import { Header } from "./components/header";
+
 export function App() {
 	return (
-		<>
-			<span className="text-red-500">Hello World</span>
-		</>
+		<div className="w-screen min-h-screen flex flex-col text-primary">
+			<Header />
+		</div>
 	);
 }
