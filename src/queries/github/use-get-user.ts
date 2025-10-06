@@ -7,5 +7,7 @@ export function useGetUser(username: string) {
 	return useQuery({
 		queryKey: ["github", "user", username],
 		queryFn: () => githubService.getUser(username),
+		enabled: !!username && username.trim() !== "",
+		retry: false,
 	});
 }

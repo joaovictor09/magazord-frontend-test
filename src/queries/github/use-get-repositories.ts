@@ -7,5 +7,7 @@ export function useGetRepositories(username: string) {
 	return useQuery({
 		queryKey: ["github", "repositories", username],
 		queryFn: () => githubService.getRepositories(username),
+		enabled: !!username && username.trim() !== "",
+		retry: false,
 	});
 }

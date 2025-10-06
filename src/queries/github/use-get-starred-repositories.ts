@@ -7,5 +7,7 @@ export function useGetStarredRepositories(username: string) {
 	return useQuery({
 		queryKey: ["github", "starred", username],
 		queryFn: () => githubService.getStarredRepositories(username),
+		enabled: !!username && username.trim() !== "",
+		retry: false,
 	});
 }
