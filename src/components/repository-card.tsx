@@ -1,28 +1,17 @@
 import { GitFork, Star } from "lucide-react";
+import type { GithubRepository } from "../types/github-service-types";
 
 interface RepositoryCardProps {
-	author: string;
-	name: string;
-	description: string;
-	language: string;
-	stars: number;
-	forks: number;
-	url: string;
+	repository: GithubRepository;
 }
 
-export function RepositoryCard({
-	author,
-	name,
-	description,
-	language,
-	stars,
-	forks,
-	url,
-}: RepositoryCardProps) {
+export function RepositoryCard({ repository }: RepositoryCardProps) {
+	const { name, description, language } = repository;
+
 	return (
 		<div className="flex flex-col gap-[9px]">
-			<a href={url} target="_blank">
-				<span className="font-light text-lg">{author}</span>
+			<a href={repository.html_url} target="_blank">
+				<span className="font-light text-lg">{repository.owner.login}</span>
 				<span className="font-normal text-lg"> / </span>
 				<span className="font-semibold text-lg text-[#0587FF]">{name}</span>
 			</a>
@@ -37,13 +26,13 @@ export function RepositoryCard({
 				)}
 				<div className="flex items-center gap-2">
 					<span className="flex items-center gap-2">
-						<Star fill="#000" /> {stars}
+						<Star fill="#000" /> {repository.stargazers_count}
 					</span>
 				</div>
 				<div className="flex items-center gap-2">
 					<span className="flex items-center gap-2">
 						<GitFork />
-						{forks}
+						{repository.forks_count}
 					</span>
 				</div>
 			</div>

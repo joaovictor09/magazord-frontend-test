@@ -18,16 +18,7 @@ export function RepositoriesList({
 					<RepositoryCardLoading key={`repository-card-loading-${index}`} />
 				))}
 			{repositories.map((repo) => (
-				<RepositoryCard
-					key={repo.name}
-					author={repo.owner.login}
-					name={repo.name}
-					description={repo.description}
-					language={repo.language}
-					stars={repo.stargazers_count}
-					forks={repo.forks_count}
-					url={repo.html_url}
-				/>
+				<RepositoryCard key={repo.id} repository={repo} />
 			))}
 		</div>
 	);

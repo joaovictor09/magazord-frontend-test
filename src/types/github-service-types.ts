@@ -10,6 +10,7 @@ export type GithubUser = {
 };
 
 export type GithubRepository = {
+	id: number;
 	name: string;
 	description: string;
 	html_url: string;
