@@ -5,11 +5,17 @@ import { useFilteredRepositories } from "./use-filtered-repositories";
 
 export function useRepositories() {
 	const { username } = useFiltersStorage();
-	const { data: repositories = [], isLoading: isRepositoriesLoading } =
-		useGetRepositories(username);
+	const {
+		data: repositories = [],
+		isLoading: isRepositoriesLoading,
+		error: repositoriesError,
+		refetch: refetchRepositories,
+	} = useGetRepositories(username);
 	const {
 		data: starredRepositories = [],
 		isLoading: isStarredRepositoriesLoading,
+		error: starredRepositoriesError,
+		refetch: refetchStarredRepositories,
 	} = useGetStarredRepositories(username);
 
 	const filteredRepositories = useFilteredRepositories(repositories);
@@ -20,11 +26,22 @@ export function useRepositories() {
 	const starredRepositoriesCount = starredRepositories.length;
 
 	return {
+		// Data
 		filteredRepositories,
 		filteredStarredRepositories,
-		isRepositoriesLoading,
-		isStarredRepositoriesLoading,
 		repositoriesCount,
 		starredRepositoriesCount,
+
+		// Loading
+		isRepositoriesLoading,
+		isStarredRepositoriesLoading,
+
+		// Error
+		repositoriesError,
+		starredRepositoriesError,
+
+		// Refetch
+		refetchRepositories,
+		refetchStarredRepositories,
 	};
 }
