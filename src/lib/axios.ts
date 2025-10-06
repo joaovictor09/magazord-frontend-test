@@ -7,5 +7,7 @@ export const api = axios.create({
 	headers: {
 		Accept: "application/vnd.github+json",
 		Authorization: githubToken ? `Bearer ${githubToken}` : undefined,
+		"X-GitHub-Api-Version": "2022-11-28",
 	},
+	timeout: 15 * 1000, // 15 seconds,
 });
