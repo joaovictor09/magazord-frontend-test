@@ -9,15 +9,24 @@ export function RepositoriesFilter() {
 
 	return (
 		<div className="mt-[49px] flex items-center gap-4 justify-between w-full">
-			<Input
-				placeholder="Search Here"
-				value={filters.search}
-				onChange={(e) => setFilters({ search: e.target.value })}
-				icon={<Search className="text-primary-light" />}
-			/>
-			<div className="flex items-center gap-4">
+			<div className="flex md:hidden px-2 py-3 bg-[#F8F8F8] gap-2 w-full items-center rounded-lg">
 				<TypeSelect />
 				<LanguageSelect />
+
+				<Search className="text-profile-link ml-auto" />
+			</div>
+
+			<div className="hidden md:flex">
+				<Input
+					placeholder="Search Here"
+					value={filters.search}
+					onChange={(e) => setFilters({ search: e.target.value })}
+					icon={<Search className="text-primary-light" />}
+				/>
+				<div className="flex items-center gap-4">
+					<TypeSelect />
+					<LanguageSelect />
+				</div>
 			</div>
 		</div>
 	);
