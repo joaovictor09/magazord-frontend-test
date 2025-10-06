@@ -1,19 +1,19 @@
 import { BookMarked, Star } from "lucide-react";
-import { useGetRepositories } from "../queries/github/use-get-repositories";
-import { useGetStarredRepositories } from "../queries/github/use-get-starred-repositories";
+import { useRepositories } from "../hooks/use-repositories";
 import { RepositoriesCounterBadge } from "./repositories-counter-badge";
 import { RepositoriesFilter } from "./repositories-filter";
 import { RepositoriesList } from "./repositories-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 export function Repositories() {
-	const username = "joaovictor09";
-	const { data: repositories = [], isLoading: isRepositoriesLoading } =
-		useGetRepositories(username);
 	const {
-		data: starredRepositories = [],
-		isLoading: isStarredRepositoriesLoading,
-	} = useGetStarredRepositories(username);
+		filteredRepositories,
+		filteredStarredRepositories,
+		isRepositoriesLoading,
+		isStarredRepositoriesLoading,
+		repositoriesCount,
+		starredRepositoriesCount,
+	} = useRepositories();
 
 	return (
 		<Tabs defaultValue="repositories" className="w-full">
@@ -22,14 +22,14 @@ export function Repositories() {
 					<div className="flex items-center gap-2 text-lg">
 						<BookMarked />
 						<span>Repositories</span>
-						<RepositoriesCounterBadge count={repositories.length} />
+						<RepositoriesCounterBadge count={repositoriesCount} />
 					</div>
 				</TabsTrigger>
 				<TabsTrigger value="starred">
 					<div className="flex items-center gap-2 text-lg">
 						<Star />
 						<span>Starred</span>
-						<RepositoriesCounterBadge count={starredRepositories.length} />
+						<RepositoriesCounterBadge count={starredRepositoriesCount} />
 					</div>
 				</TabsTrigger>
 			</TabsList>
@@ -38,7 +38,7 @@ export function Repositories() {
 				<RepositoriesFilter />
 				<RepositoriesList
 					isLoading={isRepositoriesLoading}
-					repositories={repositories}
+					repositories={filteredRepositories}
 				/>
 			</TabsContent>
 
@@ -46,7 +46,7 @@ export function Repositories() {
 				<RepositoriesFilter />
 				<RepositoriesList
 					isLoading={isStarredRepositoriesLoading}
-					repositories={starredRepositories}
+					repositories={filteredStarredRepositories}
 				/>
 			</TabsContent>
 		</Tabs>

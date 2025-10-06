@@ -21,4 +21,7 @@ export type GithubRepository = {
 	};
 	created_at: string;
 	updated_at: string;
+	fork: boolean;
+	archived: boolean;
+	mirror_url: string;
 };
