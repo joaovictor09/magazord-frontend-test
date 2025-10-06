@@ -1,5 +1,6 @@
 import { BookMarked, Star } from "lucide-react";
 import { RepositoriesCounterBadge } from "./repositories-counter-badge";
+import { RepositoriesFilter } from "./repositories-filter";
 import { RepositoryCard } from "./repository-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
@@ -22,8 +23,8 @@ export function Repositories() {
 					</div>
 				</TabsTrigger>
 			</TabsList>
-
 			<TabsContent value="repositories">
+				<RepositoriesFilter />
 				<div className="mt-10 flex flex-col gap-12">
 					<RepositoryCard
 						author="John Doe"
@@ -43,7 +44,9 @@ export function Repositories() {
 					/>
 				</div>
 			</TabsContent>
+
 			<TabsContent value="starred">
+				<RepositoriesFilter />
 				<div className="mt-10 flex flex-col gap-12">
 					<RepositoryCard
 						author="John Doe"
