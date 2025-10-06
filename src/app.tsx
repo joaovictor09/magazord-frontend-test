@@ -1,8 +1,7 @@
 export function App() {
-  return (
-    <>
-      <span>Hello World</span>
-    </>
-  )
+	return (
+		<>
+			<span className="text-red-500">Hello World</span>
+		</>
+	);
 }
-
