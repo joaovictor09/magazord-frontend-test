@@ -11,5 +11,8 @@
 	--font-roboto: "Roboto", sans-serif;
 
 	--color-header-background: #24292e;
-	--color-primary: #ffffff;
+	--color-header-text: #ffffff;
+	--color-primary: #000000;
+	--color-primary-light: #989898;
+	--color-profile-link: #0587ff;
 }
