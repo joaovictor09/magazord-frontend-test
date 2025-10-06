@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 export function Repositories() {
 	return (
-		<Tabs defaultValue="repositories">
+		<Tabs defaultValue="repositories" className="w-full">
 			<TabsList className="flex items-center gap-[57px]">
 				<TabsTrigger value="repositories">
 					<div className="flex items-center gap-2 text-lg">
