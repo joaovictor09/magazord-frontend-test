@@ -3,14 +3,36 @@ import { useGetUser } from "../queries/github/use-get-user";
 import { useFiltersStorage } from "../storage/filters-storage";
 import { ProfileLink } from "./profile-link";
 import { ProfileLoading } from "./profile-loading";
+import { ErrorMessage } from "./ui/error-message";
 
 export function Profile() {
 	const { username } = useFiltersStorage();
-	const { data: user, isLoading } = useGetUser(username);
+	const { data: user, isLoading, error, refetch } = useGetUser(username);
 
 	if (isLoading) return <ProfileLoading />;
 
-	if (!user) return null;
+	if (error) {
+		return (
+			<div className="w-[251px]">
+				<ErrorMessage
+					title="Failed to load profile"
+					description={error instanceof Error ? error.message : "Unknown error"}
+					onRetry={refetch}
+				/>
+			</div>
+		);
+	}
+
+	if (!user) {
+		return (
+			<div className="w-[251px]">
+				<ErrorMessage
+					title="User not found"
+					description={`The user "${username}" doesn't exist or is not accessible.`}
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col gap-6 w-max items-center">
