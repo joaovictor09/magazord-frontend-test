@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useFiltersStorage } from "../storage/filters-storage";
 import {
 	Select,
 	SelectContent,
@@ -16,15 +16,19 @@ const languageOptions = [
 ];
 
 export function LanguageSelect() {
-	const [value, setValue] = useState("all");
+	const { filters, setFilters } = useFiltersStorage();
 
 	return (
-		<Select value={value} onValueChange={setValue}>
+		<Select
+			value={filters.language}
+			onValueChange={(value) => setFilters({ language: value })}
+		>
 			<SelectTrigger>
 				<SelectValue placeholder="Language">
-					{value === "all"
+					{filters.language === "all"
 						? "Language"
-						: languageOptions.find((opt) => opt.value === value)?.label}
+						: languageOptions.find((opt) => opt.value === filters.language)
+								?.label}
 				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>

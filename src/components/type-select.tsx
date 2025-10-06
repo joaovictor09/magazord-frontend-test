@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useFiltersStorage } from "../storage/filters-storage";
 import {
 	Select,
 	SelectContent,
@@ -16,15 +16,18 @@ const typeOptions = [
 ];
 
 export function TypeSelect() {
-	const [value, setValue] = useState("all");
+	const { filters, setFilters } = useFiltersStorage();
 
 	return (
-		<Select value={value} onValueChange={setValue}>
+		<Select
+			value={filters.type}
+			onValueChange={(value) => setFilters({ type: value })}
+		>
 			<SelectTrigger>
 				<SelectValue placeholder="Type">
-					{value === "all"
+					{filters.type === "all"
 						? "Type"
-						: typeOptions.find((opt) => opt.value === value)?.label}
+						: typeOptions.find((opt) => opt.value === filters.type)?.label}
 				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>
