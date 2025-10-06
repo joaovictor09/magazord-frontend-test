@@ -3,14 +3,17 @@ import { useGetRepositories } from "../queries/github/use-get-repositories";
 import { useGetStarredRepositories } from "../queries/github/use-get-starred-repositories";
 import { RepositoriesCounterBadge } from "./repositories-counter-badge";
 import { RepositoriesFilter } from "./repositories-filter";
-import { RepositoryCard } from "./repository-card";
+import { RepositoriesList } from "./repositories-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 export function Repositories() {
 	const username = "joaovictor09";
-	const { data: repositories = [] } = useGetRepositories(username);
-	const { data: starredRepositories = [] } =
-		useGetStarredRepositories(username);
+	const { data: repositories = [], isLoading: isRepositoriesLoading } =
+		useGetRepositories(username);
+	const {
+		data: starredRepositories = [],
+		isLoading: isStarredRepositoriesLoading,
+	} = useGetStarredRepositories(username);
 
 	return (
 		<Tabs defaultValue="repositories" className="w-full">
@@ -33,38 +36,18 @@ export function Repositories() {
 
 			<TabsContent value="repositories">
 				<RepositoriesFilter />
-				<div className="mt-10 flex flex-col gap-12">
-					{repositories.map((repo) => (
-						<RepositoryCard
-							key={repo.name}
-							author={repo.owner.login}
-							name={repo.name}
-							description={repo.description}
-							language={repo.language}
-							stars={repo.stargazers_count}
-							forks={repo.forks_count}
-							url={repo.html_url}
-						/>
-					))}
-				</div>
+				<RepositoriesList
+					isLoading={isRepositoriesLoading}
+					repositories={repositories}
+				/>
 			</TabsContent>
 
 			<TabsContent value="starred">
 				<RepositoriesFilter />
-				<div className="mt-10 flex flex-col gap-12">
-					{starredRepositories.map((repo) => (
-						<RepositoryCard
-							key={repo.name}
-							author={repo.owner.login}
-							name={repo.name}
-							description={repo.description}
-							language={repo.language}
-							stars={repo.stargazers_count}
-							forks={repo.forks_count}
-							url={repo.html_url}
-						/>
-					))}
-				</div>
+				<RepositoriesList
+					isLoading={isStarredRepositoriesLoading}
+					repositories={starredRepositories}
+				/>
 			</TabsContent>
 		</Tabs>
 	);
