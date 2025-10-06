@@ -1,8 +1,13 @@
-import { Building, Link, MapPin, Twitter } from "lucide-react";
 import { useGetUser } from "../queries/github/use-get-user";
 import { useFiltersStorage } from "../storage/filters-storage";
-import { ProfileLink } from "./profile-link";
+import { ProfileLinks } from "./profile-links";
 import { ProfileLoading } from "./profile-loading";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "./ui/accordion";
 import { ErrorMessage } from "./ui/error-message";
 
 export function Profile() {
@@ -35,7 +40,7 @@ export function Profile() {
 	}
 
 	return (
-		<div className="flex flex-col gap-6 w-max items-center">
+		<div className="flex flex-col gap-6 w-full md:w-max items-center justify-center md:justify-start">
 			<div className="relative w-max">
 				<img
 					src={user.avatar_url}
@@ -53,34 +58,20 @@ export function Profile() {
 				<span className="text-primary-light">{user.bio}</span>
 			</div>
 
-			<div className="flex flex-col gap-4 w-full">
-				{user.company && (
-					<ProfileLink
-						icon={<Building className="size-4" />}
-						label={user.company}
-					/>
-				)}
-				{user.location && (
-					<ProfileLink
-						icon={<MapPin className="size-4" />}
-						label={user.location}
-					/>
-				)}
-				{user.blog && (
-					<ProfileLink
-						icon={<Link className="size-4" />}
-						label={user.blog}
-						link={user.blog}
-					/>
-				)}
-				{user.twitter_username && (
-					<ProfileLink
-						icon={<Twitter className="size-4" />}
-						label={user.twitter_username}
-						link={`https://twitter.com/${user.twitter_username}`}
-					/>
-				)}
+			<div className="hidden md:flex flex-col gap-4 w-full">
+				<ProfileLinks user={user} />
 			</div>
+
+			<Accordion type="single" collapsible className="w-full md:hidden">
+				<AccordionItem value="item-1">
+					<AccordionTrigger className="mx-auto">
+						Informações Adicionais
+					</AccordionTrigger>
+					<AccordionContent className="w-full">
+						<ProfileLinks user={user} />
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
 		</div>
 	);
 }
