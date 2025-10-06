@@ -1,10 +1,12 @@
 import { Building, Link, MapPin, Twitter } from "lucide-react";
 import { useGetUser } from "../queries/github/use-get-user";
+import { useFiltersStorage } from "../storage/filters-storage";
 import { ProfileLink } from "./profile-link";
 import { ProfileLoading } from "./profile-loading";
 
 export function Profile() {
-	const { data: user, isLoading } = useGetUser("joaovictor09");
+	const { username } = useFiltersStorage();
+	const { data: user, isLoading } = useGetUser(username);
 
 	if (isLoading) return <ProfileLoading />;
 

@@ -12,18 +12,18 @@ const defaultFilters: Filters = {
 	type: "all",
 };
 
+const defaultUsername = "joaovictor09";
+
 interface FiltersState {
+	username: string;
 	filters: Filters;
 	setFilters: (filters: Partial<Filters>) => void;
 	resetFilters: () => void;
 }
 
 export const useFiltersStorage = create<FiltersState>((set) => ({
-	filters: {
-		search: "",
-		language: "all",
-		type: "all",
-	},
+	username: defaultUsername,
+	filters: defaultFilters,
 	setFilters: (newFilters) =>
 		set((state) => ({
 			filters: { ...state.filters, ...newFilters },
