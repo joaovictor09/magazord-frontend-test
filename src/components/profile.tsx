@@ -1,9 +1,12 @@
 import { Building, Link, MapPin, Twitter } from "lucide-react";
 import { useGetUser } from "../queries/github/use-get-user";
 import { ProfileLink } from "./profile-link";
+import { ProfileLoading } from "./profile-loading";
 
 export function Profile() {
-	const { data: user } = useGetUser("joaovictor09");
+	const { data: user, isLoading } = useGetUser("joaovictor09");
+
+	if (isLoading) return <ProfileLoading />;
 
 	if (!user) return null;
 
