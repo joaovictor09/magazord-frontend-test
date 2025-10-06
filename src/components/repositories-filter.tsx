@@ -16,14 +16,14 @@ export function RepositoriesFilter() {
 				<Search className="text-profile-link ml-auto" />
 			</div>
 
-			<div className="hidden md:flex">
+			<div className="hidden md:flex w-full">
 				<Input
 					placeholder="Search Here"
 					value={filters.search}
 					onChange={(e) => setFilters({ search: e.target.value })}
 					icon={<Search className="text-primary-light" />}
 				/>
-				<div className="flex items-center gap-4">
+				<div className="flex items-center gap-4 ml-auto">
 					<TypeSelect />
 					<LanguageSelect />
 				</div>
