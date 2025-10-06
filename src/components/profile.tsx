@@ -1,12 +1,17 @@
-import { Building } from "lucide-react";
+import { Building, Link, MapPin, Twitter } from "lucide-react";
+import { useGetUser } from "../queries/github/use-get-user";
 import { ProfileLink } from "./profile-link";
 
 export function Profile() {
+	const { data: user } = useGetUser("joaovictor09");
+
+	if (!user) return null;
+
 	return (
 		<div className="flex flex-col gap-6 w-max items-center">
 			<div className="relative w-max">
 				<img
-					src="https://github.com/joaovictor09.png"
+					src={user.avatar_url}
 					alt="Profile"
 					className="w-[150px] h-[150px] rounded-full"
 				/>
@@ -17,28 +22,37 @@ export function Profile() {
 			</div>
 
 			<div className="w-[251px] flex flex-col gap-1 text-center">
-				<h1 className="text-2xl font-bold">Gabriel Cordeiro</h1>
-				<span className="text-primary-light">
-					Head development team Front-End Magazord - Tagged (#BZ)
-				</span>
+				<h1 className="text-2xl font-bold">{user.name}</h1>
+				<span className="text-primary-light">{user.bio}</span>
 			</div>
 
 			<div className="flex flex-col gap-4 w-full">
-				<ProfileLink
-					icon={<Building />}
-					label="Magazord"
-					link="https://magazord.com.br"
-				/>
-				<ProfileLink
-					icon={<Building />}
-					label="Magazord"
-					link="https://magazord.com.br"
-				/>
-				<ProfileLink
-					icon={<Building />}
-					label="Magazord"
-					link="https://magazord.com.br"
-				/>
+				{user.company && (
+					<ProfileLink
+						icon={<Building className="size-4" />}
+						label={user.company}
+					/>
+				)}
+				{user.location && (
+					<ProfileLink
+						icon={<MapPin className="size-4" />}
+						label={user.location}
+					/>
+				)}
+				{user.blog && (
+					<ProfileLink
+						icon={<Link className="size-4" />}
+						label={user.blog}
+						link={user.blog}
+					/>
+				)}
+				{user.twitter_username && (
+					<ProfileLink
+						icon={<Twitter className="size-4" />}
+						label={user.twitter_username}
+						link={`https://twitter.com/${user.twitter_username}`}
+					/>
+				)}
 			</div>
 		</div>
 	);
